@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                // Test change android studio git integration
+                // Test change android studio git integration test again new repo name
                 // position 0 home, 1 rss feed, 2 prime calc
             }
 
