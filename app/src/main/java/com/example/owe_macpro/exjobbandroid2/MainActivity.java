@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                Log.d("onPageSelected viewpager, position: ", String.valueOf(position));
+                // Test change android studio git integration
                 // position 0 home, 1 rss feed, 2 prime calc
             }
 
