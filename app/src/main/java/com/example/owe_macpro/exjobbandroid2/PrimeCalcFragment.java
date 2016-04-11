@@ -71,7 +71,7 @@ public class PrimeCalcFragment extends Fragment implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.run_calc_btn:
-                primes = generatePrimes(1000);
+                primes = generatePrimes(100000);
                 primeNumberListView.setAdapter(new PrimeCalcArrayAdapter(getActivity().getApplicationContext(), primes));
                 primeNumberResultTextView.setText(Double.toString(generatePrimesExecutionTime) + "ms");
                 break;
@@ -87,6 +87,7 @@ public class PrimeCalcFragment extends Fragment implements View.OnClickListener 
     }
 
     private ArrayList<Integer> generatePrimes(int limit) {
+        // sieve of eratosthenes
         final int numPrimes = countPrimesUpperBound(limit);
         ArrayList<Integer> primes = new ArrayList<Integer>(numPrimes);
         boolean [] isComposite    = new boolean [limit];   // all false
