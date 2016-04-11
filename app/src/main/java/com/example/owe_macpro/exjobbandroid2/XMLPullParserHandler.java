@@ -68,7 +68,6 @@ public class XMLPullParserHandler {
                             rssItems.add(rssItem);
                         }
 
-
                         if (rssItem != null) {
                             // Attach channel info
                             rssItem.setFeed_title(feedTitle);
