@@ -72,7 +72,7 @@ public class PrimeCalcFragment extends Fragment implements View.OnClickListener 
         switch (v.getId()) {
             case R.id.run_calc_btn:
                 primes = generatePrimes(100000);
-                primeNumberListView.setAdapter(new PrimeCalcArrayAdapter(getActivity().getApplicationContext(), primes));
+                //primeNumberListView.setAdapter(new PrimeCalcArrayAdapter(getActivity().getApplicationContext(), primes));
                 primeNumberResultTextView.setText(Double.toString(generatePrimesExecutionTime) + "ms");
                 break;
             case R.id.reset_calc_btn:
