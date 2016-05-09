@@ -71,9 +71,14 @@ public class PrimeCalcFragment extends Fragment implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.run_calc_btn:
-                primes = generatePrimes(100000);
+                Integer primeCount = 100000;
+                primes = generatePrimes(primeCount);
                 //primeNumberListView.setAdapter(new PrimeCalcArrayAdapter(getActivity().getApplicationContext(), primes));
                 primeNumberResultTextView.setText(Double.toString(generatePrimesExecutionTime) + "ms");
+                // Add to db
+                SimpleHttpPost postClass = new SimpleHttpPost();
+                postClass.setPostParameters("app_type=android&app_function=prime&exec_time="+Double.toString(generatePrimesExecutionTime));
+                postClass.httpPost();
                 break;
             case R.id.reset_calc_btn:
                 Log.d("RESETBTN", "Resetting primes");

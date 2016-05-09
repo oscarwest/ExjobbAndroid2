@@ -71,6 +71,10 @@ public class RssFeedFragment extends Fragment implements View.OnClickListener {
                     double rssFeedExecutionTime = ((double)lStopTime - (double)lStartTime) / 1000000;
                     executionTimeView.setText(String.valueOf(rssFeedExecutionTime) + "ms");
                     Log.d("CREATION", "RSS execution time: " + String.valueOf(rssFeedExecutionTime) + "ms");
+                    // Add to db
+                    SimpleHttpPost postClass = new SimpleHttpPost();
+                    postClass.setPostParameters("app_type=android&app_function=rss&exec_time=" + Double.toString(rssFeedExecutionTime));
+                    postClass.httpPost();
 
                 } catch (Exception exception) {
                     Log.d("RSS FEED ERROR: ", exception.toString());
@@ -85,7 +89,6 @@ public class RssFeedFragment extends Fragment implements View.OnClickListener {
                 executionTimeView.setText("0ms");
                 break;
         }
-
     }
 
     public static RssFeedFragment newInstance() {
