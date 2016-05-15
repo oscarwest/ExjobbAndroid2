@@ -29,6 +29,9 @@ public class PrimeCalcFragment extends Fragment implements View.OnClickListener 
     ListView primeNumberListView;
     TextView primeNumberResultTextView;
     private int testCount = 0;
+    Handler handler;
+    Runnable runnable;
+    Boolean runnableActive = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,20 +56,15 @@ public class PrimeCalcFragment extends Fragment implements View.OnClickListener 
         resetPrimesButton.setOnClickListener(this);
 
         // Automate button clicking for data collection
-        final Handler handler = new Handler();
-        Runnable runnable = new Runnable() {
+
+        handler = new Handler();
+        runnable = new Runnable() {
             public void run() {
                 calculatePrimesButton.performClick();
                 testCount++;
-                if (testCount >= 1000) {
-                    handler.removeCallbacks(this);
-                    Log.d("DEBUG", "Measurements done.");
-                } else {
-                    handler.postDelayed(this, 700);
-                }
+                handler.postDelayed(this, 700);
             }
         };
-        handler.postDelayed(runnable, 1000);
 
 
         return v;
@@ -95,12 +93,21 @@ public class PrimeCalcFragment extends Fragment implements View.OnClickListener 
                 SimpleHttpPost postClass = new SimpleHttpPost();
                 postClass.setPostParameters("primes="+Integer.toString(primeCount)+"&app_type=android&app_function=prime&exec_time="+Double.toString(generatePrimesExecutionTime));
                 postClass.httpPost();
+
+                // Automate data collection, initialize runnable only the first time we click it
+                if (runnableActive == false) {
+                    runnableActive = true;
+                    handler.postDelayed(runnable, 1000);
+                }
+
                 break;
             case R.id.reset_calc_btn:
                 Log.d("RESETBTN", "Resetting primes");
                 primes.clear();
                 primeNumberListView.setAdapter(new PrimeCalcArrayAdapter(getActivity().getApplicationContext(), primes));
                 primeNumberResultTextView.setText("0ms");
+                handler.removeCallbacksAndMessages(runnable);
+                runnableActive = false;
                 break;
 
         }

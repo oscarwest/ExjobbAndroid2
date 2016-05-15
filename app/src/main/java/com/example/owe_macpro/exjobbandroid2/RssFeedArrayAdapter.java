@@ -40,7 +40,7 @@ public class RssFeedArrayAdapter extends ArrayAdapter<RssItem> {
 
         String title = getItem(position).getTitle();
         String description = getItem(position).getDescription();
-        String imageUrl = "http:"+getItem(position).getEnclosure_url();
+        String imageUrl = getItem(position).getEnclosure_url();
 
         feedItemTitle.setText(title);
         feedItemDescription.setText(description.substring(0, 100));
