@@ -1,6 +1,7 @@
 package com.example.owe_macpro.exjobbandroid2;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ public class PrimeCalcFragment extends Fragment implements View.OnClickListener 
     private ArrayList<Integer> primes;
     ListView primeNumberListView;
     TextView primeNumberResultTextView;
+    private int testCount = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,14 +46,28 @@ public class PrimeCalcFragment extends Fragment implements View.OnClickListener 
         primeNumberResultTextView.setText("0ms");
 
         // Add listeners to buttons
-        Button calculatePrimesButton = (Button) v.findViewById(R.id.run_calc_btn);
+        final Button calculatePrimesButton = (Button) v.findViewById(R.id.run_calc_btn);
         Button resetPrimesButton = (Button) v.findViewById(R.id.reset_calc_btn);
 
         calculatePrimesButton.setOnClickListener(this);
         resetPrimesButton.setOnClickListener(this);
 
-        //TextView tv = (TextView) v.findViewById(R.id.run_calc_btn);
-        //tv.setText(getArguments().getString("msg"));
+        // Automate button clicking for data collection
+        final Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            public void run() {
+                calculatePrimesButton.performClick();
+                testCount++;
+                if (testCount >= 1000) {
+                    handler.removeCallbacks(this);
+                    Log.d("DEBUG", "Measurements done.");
+                } else {
+                    handler.postDelayed(this, 700);
+                }
+            }
+        };
+        handler.postDelayed(runnable, 1000);
+
 
         return v;
     }
@@ -71,13 +87,13 @@ public class PrimeCalcFragment extends Fragment implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.run_calc_btn:
-                Integer primeCount = 100000;
+                Integer primeCount = 100;
                 primes = generatePrimes(primeCount);
                 //primeNumberListView.setAdapter(new PrimeCalcArrayAdapter(getActivity().getApplicationContext(), primes));
                 primeNumberResultTextView.setText(Double.toString(generatePrimesExecutionTime) + "ms");
                 // Add to db
                 SimpleHttpPost postClass = new SimpleHttpPost();
-                postClass.setPostParameters("app_type=android&app_function=prime&exec_time="+Double.toString(generatePrimesExecutionTime));
+                postClass.setPostParameters("primes="+Integer.toString(primeCount)+"&app_type=android&app_function=prime&exec_time="+Double.toString(generatePrimesExecutionTime));
                 postClass.httpPost();
                 break;
             case R.id.reset_calc_btn:

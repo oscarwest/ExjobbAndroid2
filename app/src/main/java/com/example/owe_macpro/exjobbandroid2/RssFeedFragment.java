@@ -50,7 +50,6 @@ public class RssFeedFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        Log.d("WHAAT", String.valueOf(v.getId()));
 
         switch (v.getId()) {
             case R.id.run_rss_btn:

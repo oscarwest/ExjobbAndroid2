@@ -39,7 +39,6 @@ public class SimpleHttpPost {
 
     public void httpPost() {
         // Create asynctask and do http post to mysql
-
         AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
             @Override
             protected void onPreExecute() {
@@ -84,6 +83,7 @@ public class SimpleHttpPost {
             }
         };
 
+        // Execute the task
         if(Build.VERSION.SDK_INT >= 11)
             task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         else
