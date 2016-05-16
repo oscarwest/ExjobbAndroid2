@@ -62,7 +62,12 @@ public class PrimeCalcFragment extends Fragment implements View.OnClickListener 
             public void run() {
                 calculatePrimesButton.performClick();
                 testCount++;
-                handler.postDelayed(this, 700);
+                if (testCount >= 1000) {
+                    handler.removeCallbacksAndMessages(this);
+                    Log.e("DEBUG", "Measurements done.");
+                } else {
+                    handler.postDelayed(this, 700);
+                }
             }
         };
 

@@ -33,8 +33,8 @@ public class RssFeedFragment extends Fragment implements View.OnClickListener {
     private Runnable runnable;
     private Boolean runnableActive = false;
     private int testCount = 0;
-    private int rssFileResource = R.raw.rss10;
-    private String rssFeedLength = "10";
+    private int rssFileResource = R.raw.rss100;
+    private String rssFeedLength = "100";
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_rss_feed, container, false);
@@ -60,7 +60,12 @@ public class RssFeedFragment extends Fragment implements View.OnClickListener {
                 rssListView = (NonScrollListView) v.findViewById(R.id.feedListView);
                 executeRssBtn.performClick();
                 testCount++;
-                handler.postDelayed(this, 700);
+                if (testCount >= 1000) {
+                    handler.removeCallbacksAndMessages(this);
+                    Log.e("DEBUG", "Measurements done.");
+                } else {
+                    handler.postDelayed(this, 700);
+                }
             }
         };
 
