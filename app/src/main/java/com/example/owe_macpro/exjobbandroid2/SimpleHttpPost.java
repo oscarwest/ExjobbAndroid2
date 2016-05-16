@@ -43,11 +43,11 @@ public class SimpleHttpPost {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                Log.e("AsyncTask", "onPreExecute");
+                Log.d("AsyncTask", "Preparing DB Post..");
             }
             @Override
             protected String doInBackground(Void... params) {
-                Log.v("AsyncTask", "doInBackground");
+                Log.d("AsyncTask", "Doing DB Post..");
                 try {
                     HttpURLConnection urlConnection = (HttpURLConnection) urlToRequest.openConnection();
                     urlConnection.setDoOutput(true);
@@ -78,7 +78,7 @@ public class SimpleHttpPost {
             }
             @Override
             protected void onPostExecute(String msg) {
-                Log.v("AsyncTask", "onPostExecute");
+                Log.d("AsyncTask", "Finished DB Post..");
 
             }
         };
