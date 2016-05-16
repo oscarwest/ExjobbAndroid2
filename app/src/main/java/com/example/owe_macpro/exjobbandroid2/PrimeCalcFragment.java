@@ -24,6 +24,9 @@ public class PrimeCalcFragment extends Fragment implements View.OnClickListener 
     private int testCount = 0;
     private Button calculatePrimesButton;
     private Button resetPrimesButton;
+    private AsyncTask<Void, Void, PrimeNumbers> primeNumberCalcTask;
+    private Handler handler;
+    private Runnable runnable;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,6 +47,14 @@ public class PrimeCalcFragment extends Fragment implements View.OnClickListener 
         calculatePrimesButton.setOnClickListener(this);
         resetPrimesButton.setOnClickListener(this);
 
+        // Define a handler and runnable to automate data collection
+        handler = new Handler();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                calculatePrimesButton.performClick();
+            }
+        };
 
         return v;
     }
@@ -63,7 +74,7 @@ public class PrimeCalcFragment extends Fragment implements View.OnClickListener 
             case R.id.run_calc_btn:
 
                 // Create asynctask to do the calc and post to db and automate
-                AsyncTask<Void, Void, PrimeNumbers> task = new AsyncTask<Void, Void, PrimeNumbers>() {
+                primeNumberCalcTask = new AsyncTask<Void, Void, PrimeNumbers>() {
                     @Override
                     protected void onPreExecute() {
                         super.onPreExecute();
@@ -84,7 +95,6 @@ public class PrimeCalcFragment extends Fragment implements View.OnClickListener 
                     @Override
                     protected void onPostExecute(PrimeNumbers PrimeNumbers) {
                         Log.d("AsyncTask", "Finished Calculation..");
-
                         primeNumberResultTextView.setText(Double.toString(PrimeNumbers.getExecutionTime()) + "ms");
 
                         // Add to db
@@ -94,25 +104,23 @@ public class PrimeCalcFragment extends Fragment implements View.OnClickListener 
 
                         // Automate data collection
                         if (testCount < 1000) {
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    calculatePrimesButton.performClick();
-                                }
-                            }, 1000);
+                            handler.postDelayed(runnable, 700);
                         }
                     }
                 };
 
                 // Execute the task
                 if(Build.VERSION.SDK_INT >= 11)
-                    task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                    primeNumberCalcTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 else
-                    task.execute();
+                    primeNumberCalcTask.execute();
 
                 break;
             case R.id.reset_calc_btn:
                 Log.d("RESETBTN", "Resetting primes");
+                // Cancel asynctask and handler/runnable
+                primeNumberCalcTask.cancel(true);
+                handler.removeCallbacks(runnable);
                 primeNumberListView.setAdapter(new PrimeCalcArrayAdapter(getActivity().getApplicationContext(), new ArrayList<Integer>()));
                 primeNumberResultTextView.setText("");
                 break;
