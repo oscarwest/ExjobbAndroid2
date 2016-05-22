@@ -138,6 +138,7 @@ public class RssFeedFragment extends Fragment implements View.OnClickListener {
                 rssListView.setAdapter(new RssFeedArrayAdapter(getActivity().getApplicationContext(), new ArrayList<RssItem>()));
                 feedTitle.setText("Reset");
                 executionTimeView.setText("");
+                testCount = 0;
                 break;
         }
     }

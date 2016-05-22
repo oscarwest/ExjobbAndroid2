@@ -3,6 +3,7 @@ package com.example.owe_macpro.exjobbandroid2;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.media.Image;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

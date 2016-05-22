@@ -85,7 +85,7 @@ public class PrimeCalcFragment extends Fragment implements View.OnClickListener 
                     protected PrimeNumbers doInBackground(Void... params) {
                         Log.d("AsyncTask", "Doing Calculation..");
                         PrimeNumbers PrimeNumbers = new PrimeNumbers();
-                        PrimeNumbers.setPrimeLimit(100);
+                        PrimeNumbers.setPrimeLimit(100000);
                         PrimeNumbers.generatePrimes();
                         testCount++;
 
